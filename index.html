@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time-Varying Tuberculosis-Specific Correction QT (QTcTBT) Calculator</title>
+<style>
+  /* Add CSS styling for the green input box and set font to Sans-serif */
+  #QT {
+    background-color: lightgreen;
+    font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <h1>Time-Varying Tuberculosis-Specific Correction QT (QTcTBT) Calculator</h1>
+  
+  <div>
+    <label for="QT">Enter QT interval (msec):</label>
+    <input type="number" id="QT" value="0">
+  </div>
+  
+  <div>
+    <label for="HR">Enter Heart rate (BPM):</label>
+    <input type="number" id="HR" value="0">
+  </div>
+  
+  <div>
+    <label for="TPROG">Enter time after starting treatment (Weeks):</label>
+    <input type="number" id="TPROG" value="0">
+  </div>
+  
+  <button onclick="calculate()">Calculate</button>
+  
+  <h4>Results:</h4>
+  <div id="result1"></div>
+  <div id="result2"></div>
+  <div id="result3"></div>
+</div>
+
+<script>
+function QTcF(QT, HR) {
+  var result = Math.round(QT / Math.pow(60 / HR, 0.33));
+  return result;
+}
+
+function QTcTBT(QT, HR, TPROG) {
+  var CF = 0.4081 + ((0.33) - 0.4081) * (1 - Math.exp((-Math.log(2) * TPROG / 7.74)));
+  var result = Math.round(TPROG < 0 ? QT / Math.pow(60 / HR, 0.4081) : QT / Math.pow(60 / HR, CF));
+  return result;
+}
+
+function CF(TPROG) {
+  var result = 0.4081 + ((0.33) - 0.4081) * (1 - Math.exp((-Math.log(2) * TPROG / 7.74)));
+  return result.toFixed(4);
+}
+
+function calculate() {
+  var QT = parseFloat(document.getElementById("QT").value);
+  var HR = parseFloat(document.getElementById("HR").value);
+  var TPROG = parseFloat(document.getElementById("TPROG").value);
+  
+  var result1 = QTcF(QT, HR);
+  var result2 = QTcTBT(QT, HR, TPROG);
+  var result3 = CF(TPROG);
+  
+  document.getElementById("result1").innerText = "Fridericia correction (QTcF): " + result1;
+  document.getElementById("result2").innerText = "Time-Varying Tuberculosis-Specific Correction QT (QTcTBT): " + result2;
+  document.getElementById("result3").innerText = "Time varying correction factor used for calculation: " + result3;
+}
+</script>
+
+</body>
+</html>
