@@ -64,6 +64,14 @@
     margin-top: 10px;
     color: #333;
   }
+
+  .disclaimer {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+  }
+  
 </style>
 </head>
 <body>
@@ -95,7 +103,11 @@
     <div id="result1"></div>
   </div>
 </div>
-
+  
+  <div class="disclaimer">
+    Disclamimer: This calculation tool and the TBT correction factor are for research purposes only and have not been validated for clinical use.
+  </div>
+  
 <script>
 function QTcF(QT, HR) {
   var result = Math.round(QT / Math.pow(60 / HR, 0.33));
@@ -127,6 +139,7 @@ function calculate() {
   document.getElementById("result1").innerText = "Fridericia correction (QTcF): " + result1 + " msec";
 }
 </script>
+
 
 </body>
 </html>
